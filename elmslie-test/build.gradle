@@ -1,12 +1,6 @@
-plugins {
-    id("kotlin")
-}
+apply from: "../gradle/kotlin-library.gradle"
 
 dependencies {
     implementation(deps.test.jUnit5)
     implementation(deps.rx.rxJava3)
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
 }

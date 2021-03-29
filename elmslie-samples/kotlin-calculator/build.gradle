@@ -1,6 +1,5 @@
-plugins {
-    id("kotlin")
-}
+apply from: "../../gradle/kotlin-library.gradle"
+apply from: "../../gradle/junit-5.gradle"
 
 dependencies {
     implementation(project(":elmslie-core"))
@@ -8,5 +7,3 @@ dependencies {
 
     testImplementation(project(":elmslie-test"))
 }
-
-apply from: "../../gradle/junit-5.gradle"

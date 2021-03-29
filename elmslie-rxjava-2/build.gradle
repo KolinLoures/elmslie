@@ -1,6 +1,6 @@
-plugins {
-    id("kotlin")
-}
+apply from: "../gradle/kotlin-library.gradle"
+apply from: "../gradle/kotlin-publishing.gradle"
+apply from: "../gradle/junit-5.gradle"
 
 dependencies {
     implementation(project(":elmslie-core"))
@@ -8,10 +8,3 @@ dependencies {
     implementation(deps.rx.rxJava3Bridge)
     implementation(deps.rx.rxJava2)
 }
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-apply from: "../gradle/junit-5.gradle"
-apply from: "../gradle/kotlin-publishing.gradle"
