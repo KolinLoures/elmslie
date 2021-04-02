@@ -6,6 +6,8 @@ plugins {
 dependencies {
     implementation(project(":elmslie-android"))
     implementation(project(":elmslie-core"))
+//    implementation("com.github.vivid-money.elmslie:elmslie-core:java-compatibility-SNAPSHOT")
+//    implementation("com.github.vivid-money.elmslie:elmslie-rxjava-2:java-compatibility-SNAPSHOT")
     implementation(project(":elmslie-rxjava-2"))
 
     implementation(deps.android.appcompat)
@@ -18,5 +20,5 @@ apply from: "../../gradle/android-library.gradle"
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions.freeCompilerArgs += ['-Xjvm-default=enable']
+//    kotlinOptions.freeCompilerArgs += ['-Xjvm-default=enable']
 }

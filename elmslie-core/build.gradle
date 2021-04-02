@@ -2,6 +2,41 @@ apply from: "../gradle/kotlin-library.gradle"
 apply from: "../gradle/kotlin-publishing.gradle"
 apply from: "../gradle/junit-5.gradle"
 
+sourceSets {
+    kotlin {
+        java {
+            srcDir 'src/kotlin/java'
+        }
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+    java {
+        java {
+            srcDir 'src/java/java'
+        }
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+java {
+    registerFeature('kotlin') {
+        usingSourceSet(sourceSets.kotlin)
+        withJavadocJar()
+        withSourcesJar()
+        capability('vivid.money.elmslie', 'core', '1.0')
+        capability('vivid.money.elmslie', 'kotlin', '1.0')
+    }
+    registerFeature('java') {
+        usingSourceSet(sourceSets.java)
+        withJavadocJar()
+        withSourcesJar()
+        capability('vivid.money.elmslie', 'core', '1.0')
+        capability('vivid.money.elmslie', 'java', '1.0')
+    }
+}
+
+
 dependencies {
     implementation(deps.rx.rxJava3)
 
@@ -9,4 +44,47 @@ dependencies {
     testImplementation(deps.test.kotestAssertions)
     testImplementation(deps.test.kotestProperty)
     testImplementation(project(":elmslie-test"))
+}
+
+task sourcesJarJava(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.java.allSource
+}
+
+task sourcesJarKotlin(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.kotlin.allSource
+}
+
+task javadocJarKotlin(type: Jar, dependsOn: ":kotlinJavadoc") {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task javadocJarJava(type: Jar, dependsOn: ":javaJavadoc") {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            java(MavenPublication) {
+                from components.java
+                groupId = libraryGroup
+                artifactId = project.name + "-java"
+                version = libraryVersion
+                artifact sourcesJarJava
+                artifact javadocJarJava
+            }
+            kotlin(MavenPublication) {
+                from components.java
+                groupId = libraryGroup
+                artifactId = project.name + "-kotlin"
+                version = libraryVersion
+                artifact sourcesJarKotlin
+                artifact javadocJarKotlin
+            }
+        }
+    }
 }
